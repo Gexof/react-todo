@@ -6,6 +6,10 @@ import { REGISTER_FORM } from "../data";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../validation";
 import axiosInstance from "../config/axios.config";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import type { AxiosError } from "axios";
+import type { IErrorResponse } from "../interfaces";
 
 interface IFormInput {
   username: string;
@@ -14,6 +18,8 @@ interface IFormInput {
 }
 
 const Register = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -21,13 +27,37 @@ const Register = () => {
   } = useForm<IFormInput>({ resolver: yupResolver(registerSchema) });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(data);
+    setIsLoading(true);
 
     try {
-      const res = await axiosInstance.post("/auth/local/register", data);
-      console.log(res);
+      const { status } = await axiosInstance.post("/auth/local/register", data);
+
+      if (status === 200) {
+        toast.success("You successfully registered your account", {
+          position: "bottom-center",
+          duration: 4000,
+          style: {
+            backgroundColor: "white",
+            color: "black",
+            width: "fit-content",
+          },
+        });
+      }
     } catch (error) {
-      console.log(error);
+      const errorObj = error as AxiosError<IErrorResponse>;
+      const msg = errorObj.response?.data?.error?.message;
+
+      toast.error(`${msg}`, {
+        position: "bottom-center",
+        duration: 4000,
+        style: {
+          backgroundColor: "white",
+          color: "black",
+          width: "fit-content",
+        },
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -58,7 +88,7 @@ const Register = () => {
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         {renderRegisterForm}
 
-        <Button>Register</Button>
+        <Button isLoading={isLoading}>Register</Button>
 
         <p className="mt-6 text-center text-sm text-zinc-400">
           Already have an account?
