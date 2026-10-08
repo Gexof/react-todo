@@ -30,10 +30,15 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const { status } = await axiosInstance.post("/auth/local", data);
+      const { status, data: resData } = await axiosInstance.post(
+        "/auth/local",
+        data,
+      );
+
+      console.log(resData);
 
       if (status === 200) {
-        toast.success("You successfully registered your account", {
+        toast.success("You successfully Login", {
           position: "bottom-center",
           duration: 4000,
           style: {
@@ -43,6 +48,12 @@ const Login = () => {
           },
         });
       }
+
+      localStorage.setItem("loggedInUser", JSON.stringify(resData));
+
+      setTimeout(() => {
+        location.replace("/");
+      }, 2000);
     } catch (error) {
       const errorObj = error as AxiosError<IErrorResponse>;
       const msg = errorObj.response?.data?.error?.message;

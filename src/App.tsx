@@ -1,11 +1,12 @@
 import { Toaster } from "react-hot-toast";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+
+import { RouterProvider } from "react-router";
+import router from "./router";
 
 function App() {
   return (
     <>
-      <Login />
+      <RouterProvider router={router} />
       <Toaster />
     </>
   );
