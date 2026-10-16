@@ -8,7 +8,6 @@ interface ModalProps {
   children?: ReactNode;
 }
 
-/** Generic dark modal: closes on backdrop click, Esc or the X button. */
 export default function Modal({ open, title, onClose, children }: ModalProps) {
   useEffect(() => {
     if (!open) return;
