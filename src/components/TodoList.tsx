@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Button from "./ui/Button";
-import axiosInstance from "../config/axios.config";
-import { useQuery } from "@tanstack/react-query";
 import useAuthenticatedQuery from "../hooks/useAuthenticatedQuery";
+import EditTodoModal from "./EditTodoModal";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const storageKey = "loggedInUser";
   const userDataString = localStorage.getItem(storageKey);
@@ -35,7 +35,7 @@ const TodoList = () => {
           >
             <p className="w-full font-semibold">{todo.title}</p>
             <div className="flex items-center  justify-end w-full space-x-3">
-              <Button>Edit</Button>
+              <Button onClick={() => setIsEditModalOpen(true)}>Edit</Button>
               <Button>Delete</Button>
             </div>
           </div>
@@ -43,6 +43,11 @@ const TodoList = () => {
       ) : (
         <h3>No Todos Yet</h3>
       )}
+
+      <EditTodoModal
+        open={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+      />
     </div>
   );
 };
