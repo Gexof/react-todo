@@ -96,38 +96,40 @@ const Register = () => {
   );
 
   return (
-    <div className="w-full">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
-          Create your account
-        </h1>
+    <div className="flex min-h-[calc(100dvh-64px)] items-center justify-center px-5 py-12">
+      <div className="mx-auto w-full max-w-sm">
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
+            Create your account
+          </h1>
 
-        <p className="mt-2 text-sm leading-6 text-zinc-400">
-          Set up your account and make room for what matters.
-        </p>
+          <p className="mt-2 text-sm leading-6 text-zinc-400">
+            Set up your account and make room for what matters.
+          </p>
+        </div>
+
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
+          <div className="flex flex-col gap-4">{renderRegisterForm}</div>
+
+          <Button type="submit" isLoading={isLoading} className="mt-1">
+            Create account
+          </Button>
+
+          <p className="pt-2 text-center text-sm text-zinc-500">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="font-medium text-indigo-400 transition-colors hover:text-indigo-300 focus-visible:outline-none focus-visible:underline"
+            >
+              Log in
+            </Link>
+          </p>
+        </form>
       </div>
-
-      <form
-        className="flex flex-col gap-5"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        <div className="flex flex-col gap-4">{renderRegisterForm}</div>
-
-        <Button type="submit" isLoading={isLoading} className="mt-1">
-          Create account
-        </Button>
-
-        <p className="pt-2 text-center text-sm text-zinc-500">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="font-medium text-indigo-400 transition-colors hover:text-indigo-300 focus-visible:outline-none focus-visible:underline"
-          >
-            Log in
-          </Link>
-        </p>
-      </form>
     </div>
   );
 };

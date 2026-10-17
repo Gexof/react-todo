@@ -236,10 +236,10 @@ const TodoList = () => {
   }
 
   return (
-    <main className="mx-auto w-full max-w-5xl space-y-8 pb-10">
+    <main className="mx-auto mt-5 w-full max-w-5xl space-y-7 px-4 pb-10 sm:mt-8 sm:space-y-8 sm:px-6 lg:px-8">
       {/* Page heading */}
-      <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-2">
+      <section className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0 space-y-2">
           <p className="text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
             Personal workspace
           </p>
@@ -248,7 +248,7 @@ const TodoList = () => {
             My tasks
           </h1>
 
-          <p className="text-sm leading-6 text-zinc-400">
+          <p className="max-w-md text-sm leading-6 text-zinc-400">
             Keep track of what matters, one task at a time.
           </p>
         </div>
@@ -256,7 +256,7 @@ const TodoList = () => {
         <Button
           type="button"
           onClick={onOpenAddModal}
-          className="w-full! gap-2 rounded-lg border-indigo-400/20 px-4 sm:w-auto!"
+          className="!w-full gap-2 rounded-lg border-indigo-400/20 px-4 sm:!w-auto sm:shrink-0"
         >
           <svg
             viewBox="0 0 24 24"
@@ -278,15 +278,15 @@ const TodoList = () => {
       {/* Overview */}
       <section
         aria-label="Task overview"
-        className="grid grid-cols-1 gap-3 sm:grid-cols-3"
+        className="grid grid-cols-1 gap-3 min-[480px]:grid-cols-2 lg:grid-cols-3"
       >
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between">
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 sm:p-5">
+          <div className="flex items-center justify-between gap-2">
             <p className="text-sm text-zinc-400">Total tasks</p>
             <svg
               viewBox="0 0 24 24"
               fill="none"
-              className="size-5 text-zinc-500"
+              className="size-5 shrink-0 text-zinc-500"
               aria-hidden="true"
             >
               <path
@@ -297,32 +297,42 @@ const TodoList = () => {
               />
             </svg>
           </div>
+
           <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-100">
             {todos.length}
           </p>
-          <p className="mt-1 text-xs text-zinc-500">Tasks in your workspace</p>
+
+          <p className="mt-1 text-xs leading-5 text-zinc-500">
+            Tasks in your workspace
+          </p>
         </div>
 
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between">
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 sm:p-5">
+          <div className="flex items-center justify-between gap-2">
             <p className="text-sm text-zinc-400">With details</p>
-            <span className="size-2 rounded-full bg-indigo-400" />
+            <span className="size-2 shrink-0 rounded-full bg-indigo-400" />
           </div>
+
           <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-100">
             {todosWithDescription}
           </p>
-          <p className="mt-1 text-xs text-zinc-500">Tasks with a description</p>
+
+          <p className="mt-1 text-xs leading-5 text-zinc-500">
+            Tasks with a description
+          </p>
         </div>
 
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between">
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 sm:p-5 min-[480px]:col-span-2 lg:col-span-1">
+          <div className="flex items-center justify-between gap-2">
             <p className="text-sm text-zinc-400">Quick tasks</p>
-            <span className="size-2 rounded-full bg-zinc-500" />
+            <span className="size-2 shrink-0 rounded-full bg-zinc-500" />
           </div>
+
           <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-100">
             {quickTasks}
           </p>
-          <p className="mt-1 text-xs text-zinc-500">
+
+          <p className="mt-1 text-xs leading-5 text-zinc-500">
             Tasks without a description
           </p>
         </div>
@@ -330,12 +340,12 @@ const TodoList = () => {
 
       {/* Todo list */}
       <section className="space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <div>
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
             <h2 className="text-base font-semibold text-zinc-100">
               Your tasks
             </h2>
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm leading-6 text-zinc-500">
               Manage your tasks and their details.
             </p>
           </div>
@@ -350,12 +360,13 @@ const TodoList = () => {
             {todos.map((todo, index) => (
               <article
                 key={todo.documentId}
-                className={`group flex min-w-0 items-start gap-3 p-4 transition-colors hover:bg-zinc-900/80 sm:items-center sm:gap-4 ${
+                className={`group flex min-w-0 items-start gap-2.5 p-3 transition-colors hover:bg-zinc-900/80 min-[480px]:gap-3 min-[480px]:p-4 sm:items-center sm:gap-4 ${
                   index !== todos.length - 1
                     ? "border-b border-zinc-800/80"
                     : ""
                 }`}
               >
+                {/* Decorative task icon */}
                 <div className="mt-1.5 flex size-4 shrink-0 items-center justify-center rounded border border-zinc-600 text-transparent transition-colors group-hover:border-indigo-400 sm:mt-0">
                   <svg
                     viewBox="0 0 16 16"
@@ -373,13 +384,14 @@ const TodoList = () => {
                   </svg>
                 </div>
 
+                {/* Task information */}
                 <div className="min-w-0 flex-1">
-                  <h3 className="wrap-break-word text-sm font-medium text-zinc-200 transition-colors group-hover:text-white">
+                  <h3 className="break-words text-sm font-medium leading-6 text-zinc-200 transition-colors group-hover:text-white">
                     {todo.title}
                   </h3>
 
                   {todo.description?.trim() ? (
-                    <p className="mt-1 whitespace-pre-wrap wrap-break-word text-sm leading-6 text-zinc-500">
+                    <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-6 text-zinc-500">
                       {todo.description}
                     </p>
                   ) : (
@@ -387,7 +399,8 @@ const TodoList = () => {
                   )}
                 </div>
 
-                <div className="flex shrink-0 items-center gap-1 self-start sm:self-center">
+                {/* Actions */}
+                <div className="flex shrink-0 items-center gap-0.5 self-start min-[480px]:gap-1 sm:self-center">
                   <button
                     type="button"
                     onClick={() => onOpenEditModal(todo)}
@@ -398,7 +411,7 @@ const TodoList = () => {
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
-                      className="size-4.25"
+                      className="size-4"
                       aria-hidden="true"
                     >
                       <path
@@ -421,7 +434,7 @@ const TodoList = () => {
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
-                      className="size-4.25"
+                      className="size-4"
                       aria-hidden="true"
                     >
                       <path
@@ -438,7 +451,7 @@ const TodoList = () => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 px-5 py-14 text-center">
+          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 px-5 py-12 text-center sm:py-14">
             <div className="flex size-12 items-center justify-center rounded-xl border border-zinc-800 bg-zinc-900 text-zinc-400">
               <svg
                 viewBox="0 0 24 24"
@@ -466,7 +479,7 @@ const TodoList = () => {
             <Button
               type="button"
               onClick={onOpenAddModal}
-              className="w-auto! mt-5 gap-2"
+              className="!mt-5 !w-auto gap-2"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -487,6 +500,7 @@ const TodoList = () => {
         )}
       </section>
 
+      {/* Modals */}
       <AddTodoModal
         open={isAddModalOpen}
         isAdding={isAdding}

@@ -96,33 +96,35 @@ const Login = () => {
   );
 
   return (
-    <div className="w-full">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
-          Welcome back
-        </h1>
+    <div className="flex min-h-[calc(100dvh-64px)] items-center justify-center px-5 py-12">
+      <div className="mx-auto w-full max-w-sm">
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
+            Welcome back
+          </h1>
 
-        <p className="mt-2 text-sm leading-6 text-zinc-400">
-          Sign in to manage your tasks and stay on track.
-        </p>
+          <p className="mt-2 text-sm leading-6 text-zinc-400">
+            Sign in to manage your tasks and stay on track.
+          </p>
+        </div>
+
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+        >
+          <div className="flex flex-col gap-4">{renderLoginForm}</div>
+
+          <Button type="submit" isLoading={isLoading} className="mt-1">
+            Sign in
+          </Button>
+
+          <p className="pt-2 text-center text-sm text-zinc-500">
+            Don't have an account?{" "}
+            <span className="font-medium text-indigo-400">Create one</span>
+          </p>
+        </form>
       </div>
-
-      <form
-        className="flex flex-col gap-5"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        <div className="flex flex-col gap-4">{renderLoginForm}</div>
-
-        <Button type="submit" isLoading={isLoading} className="mt-1">
-          Sign in
-        </Button>
-
-        <p className="pt-2 text-center text-sm text-zinc-500">
-          Don't have an account?{" "}
-          <span className="font-medium text-indigo-400">Create one</span>
-        </p>
-      </form>
     </div>
   );
 };
