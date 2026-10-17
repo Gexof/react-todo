@@ -9,7 +9,12 @@ import TodoSkeleton from "./TodoSkelton";
 import AddTodoModal from "./AddTodoModal";
 
 const TodoList = () => {
+  const storageKey = "loggedInUser";
+  const userDataString = localStorage.getItem(storageKey);
+  const userData = userDataString ? JSON.parse(userDataString) : null;
+
   // States
+  const [queryVersion, setQueryVersion] = useState(1);
 
   // Open Modal States
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -32,12 +37,8 @@ const TodoList = () => {
     description: "",
   });
 
-  const storageKey = "loggedInUser";
-  const userDataString = localStorage.getItem(storageKey);
-  const userData = userDataString ? JSON.parse(userDataString) : null;
-
   const { isLoading, data } = useAuthenticatedQuery({
-    queryKey: ["todoList", todoToEdit.documentId],
+    queryKey: ["todoList", `${queryVersion}`],
     url: "/users/me?populate=todos",
     config: {
       headers: {
@@ -75,13 +76,16 @@ const TodoList = () => {
 
     const { title, description } = todoToEdit;
     try {
-      await axiosInstance.put(
+      const { status } = await axiosInstance.put(
         `/todos/${todoToEdit.documentId}`,
         { data: { title, description } },
         { headers: { Authorization: `Bearer ${userData.jwt}` } },
       );
 
-      onCloseEditModal();
+      if (status === 200) {
+        onCloseEditModal();
+        setQueryVersion((prev) => prev + 1);
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -99,11 +103,17 @@ const TodoList = () => {
     setIsRemoving(true);
 
     try {
-      await axiosInstance.delete(`/todos/${todoToEdit.documentId}`, {
-        headers: { Authorization: `Bearer ${userData.jwt}` },
-      });
+      const { status } = await axiosInstance.delete(
+        `/todos/${todoToEdit.documentId}`,
+        {
+          headers: { Authorization: `Bearer ${userData.jwt}` },
+        },
+      );
 
-      setIsRemoveModalOpen(false);
+      if (status === 200) {
+        setIsRemoveModalOpen(false);
+        setQueryVersion((prev) => prev + 1);
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -136,13 +146,16 @@ const TodoList = () => {
     const { title, description } = todoToAdd;
 
     try {
-      await axiosInstance.post(
+      const { status } = await axiosInstance.post(
         `/todos`,
         { data: { title, description } },
         { headers: { Authorization: `Bearer ${userData.jwt}` } },
       );
 
-      onCloseAddModal();
+      if (status === 200) {
+        onCloseAddModal();
+        setQueryVersion((prev) => prev + 1);
+      }
     } catch (error) {
       console.log(error);
     } finally {
