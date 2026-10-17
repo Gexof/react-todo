@@ -57,7 +57,7 @@ export default function EditTodoModal({
           <Button
             type="button"
             onClick={onClose}
-            className="!w-full !bg-zinc-800 !text-zinc-300 hover:!bg-zinc-700 sm:!w-auto"
+            className="w-full! bg-zinc-800! text-zinc-300! hover:bg-zinc-700! sm:w-auto!"
           >
             Cancel
           </Button>
@@ -65,7 +65,7 @@ export default function EditTodoModal({
           <Button
             isLoading={isUpdating}
             type="submit"
-            className="!w-full sm:!w-auto"
+            className="w-full! sm:w-auto!"
           >
             Save changes
           </Button>

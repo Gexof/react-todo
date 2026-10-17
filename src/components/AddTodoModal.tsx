@@ -59,7 +59,7 @@ const AddTodoModal = ({
           <Button
             type="button"
             onClick={onClose}
-            className="!w-full !bg-zinc-800 !text-zinc-300 hover:!bg-zinc-700 sm:!w-auto"
+            className="w-full! bg-zinc-800! text-zinc-300! hover:bg-zinc-700! sm:w-auto!"
           >
             Cancel
           </Button>
@@ -67,7 +67,7 @@ const AddTodoModal = ({
           <Button
             isLoading={isAdding}
             type="submit"
-            className="!w-full sm:!w-auto"
+            className="w-full! sm:w-auto!"
           >
             Create task
           </Button>

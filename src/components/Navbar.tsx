@@ -37,7 +37,7 @@ const Navbar = () => {
             <svg
               viewBox="0 0 24 24"
               fill="none"
-              className="size-[18px]"
+              className="size-4.5"
               aria-hidden="true"
             >
               <path

@@ -256,7 +256,7 @@ const TodoList = () => {
         <Button
           type="button"
           onClick={onOpenAddModal}
-          className="!w-full gap-2 rounded-lg border-indigo-400/20 px-4 sm:!w-auto"
+          className="w-full! gap-2 rounded-lg border-indigo-400/20 px-4 sm:w-auto!"
         >
           <svg
             viewBox="0 0 24 24"
@@ -374,12 +374,12 @@ const TodoList = () => {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <h3 className="break-words text-sm font-medium text-zinc-200 transition-colors group-hover:text-white">
+                  <h3 className="wrap-break-word text-sm font-medium text-zinc-200 transition-colors group-hover:text-white">
                     {todo.title}
                   </h3>
 
                   {todo.description?.trim() ? (
-                    <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-6 text-zinc-500">
+                    <p className="mt-1 whitespace-pre-wrap wrap-break-word text-sm leading-6 text-zinc-500">
                       {todo.description}
                     </p>
                   ) : (
@@ -398,7 +398,7 @@ const TodoList = () => {
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
-                      className="size-[17px]"
+                      className="size-4.25"
                       aria-hidden="true"
                     >
                       <path
@@ -421,7 +421,7 @@ const TodoList = () => {
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
-                      className="size-[17px]"
+                      className="size-4.25"
                       aria-hidden="true"
                     >
                       <path
@@ -466,7 +466,7 @@ const TodoList = () => {
             <Button
               type="button"
               onClick={onOpenAddModal}
-              className="!w-auto mt-5 gap-2"
+              className="w-auto! mt-5 gap-2"
             >
               <svg
                 viewBox="0 0 24 24"
