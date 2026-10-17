@@ -74,39 +74,56 @@ const Login = () => {
 
   // Renders
   const renderLoginForm = LOGIN_FORM.map(
-    ({ name, placeholder, type, validation }, idx) => (
-      <div key={idx}>
+    ({ name, placeholder, type, validation }) => (
+      <div key={name} className="flex flex-col gap-2">
         <Input
+          id={name}
           type={type}
           placeholder={placeholder}
           label={placeholder}
+          aria-invalid={!!errors[name]}
+          aria-describedby={errors[name] ? `${name}-error` : undefined}
           {...register(name, validation)}
         />
-        {errors[name] && <InputErrorMessage msg={errors[name]?.message} />}
+
+        {errors[name] && (
+          <div id={`${name}-error`}>
+            <InputErrorMessage msg={errors[name]?.message} />
+          </div>
+        )}
       </div>
     ),
   );
 
   return (
-    <>
-      <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
-      <p className="mb-6 mt-1 text-sm text-zinc-400">
-        Log in to continue to your account.
-      </p>
+    <div className="w-full">
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
+          Welcome back
+        </h1>
 
-      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        {renderLoginForm}
+        <p className="mt-2 text-sm leading-6 text-zinc-400">
+          Sign in to manage your tasks and stay on track.
+        </p>
+      </div>
 
-        <Button isLoading={isLoading}>Login</Button>
+      <form
+        className="flex flex-col gap-5"
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+      >
+        <div className="flex flex-col gap-4">{renderLoginForm}</div>
 
-        <p className="mt-6 text-center text-sm text-zinc-400">
-          Don't have an account?
-          <span className="ml-1.5 font-semibold text-indigo-400 transition hover:text-indigo-300 hover:underline">
-            Create one
-          </span>
+        <Button type="submit" isLoading={isLoading} className="mt-1">
+          Sign in
+        </Button>
+
+        <p className="pt-2 text-center text-sm text-zinc-500">
+          Don't have an account?{" "}
+          <span className="font-medium text-indigo-400">Create one</span>
         </p>
       </form>
-    </>
+    </div>
   );
 };
 

@@ -25,27 +25,51 @@ export default function EditTodoModal({
   isUpdating,
 }: IEditTodoModal) {
   return (
-    <Modal open={open} onClose={onClose} title="Edit Todo">
-      <form onSubmit={onSubmitHandler}>
-        <Input
-          label="Edit Title"
-          name="title"
-          value={todoToEdit.title}
-          onChange={onChangeHandler}
-        />
+    <Modal open={open} onClose={onClose} title="Edit task">
+      <form onSubmit={onSubmitHandler} className="mt-6 space-y-5">
+        <div>
+          <label className="mb-2 block text-sm font-medium text-zinc-200">
+            Task title
+          </label>
 
-        <TextArea
-          name="description"
-          value={todoToEdit.description}
-          onChange={onChangeHandler}
-        />
+          <Input
+            label=""
+            name="title"
+            value={todoToEdit.title}
+            onChange={onChangeHandler}
+          />
+        </div>
 
-        <Button isLoading={isUpdating} type="submit">
-          Update
-        </Button>
-        <Button type="button" onClick={onClose}>
-          Cancel
-        </Button>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-zinc-200">
+            Description
+            <span className="ml-2 font-normal text-zinc-500">(Optional)</span>
+          </label>
+
+          <TextArea
+            name="description"
+            value={todoToEdit.description}
+            onChange={onChangeHandler}
+          />
+        </div>
+
+        <div className="flex flex-col-reverse gap-3 border-t border-zinc-800 pt-5 sm:flex-row sm:justify-end">
+          <Button
+            type="button"
+            onClick={onClose}
+            className="!w-full !bg-zinc-800 !text-zinc-300 hover:!bg-zinc-700 sm:!w-auto"
+          >
+            Cancel
+          </Button>
+
+          <Button
+            isLoading={isUpdating}
+            type="submit"
+            className="!w-full sm:!w-auto"
+          >
+            Save changes
+          </Button>
+        </div>
       </form>
     </Modal>
   );

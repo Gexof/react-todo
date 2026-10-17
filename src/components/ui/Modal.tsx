@@ -42,7 +42,7 @@ export default function Modal({ open, title, onClose, children }: ModalProps) {
         aria-labelledby="modal-title"
         className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl shadow-black/60"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <h2
             id="modal-title"
             className="text-xl font-semibold tracking-tight text-zinc-100"
@@ -59,7 +59,7 @@ export default function Modal({ open, title, onClose, children }: ModalProps) {
           </button>
         </div>
 
-        {children}
+        <div className="mt-2">{children}</div>
       </div>
     </div>,
     document.body,
