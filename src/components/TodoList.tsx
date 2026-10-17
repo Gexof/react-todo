@@ -8,6 +8,7 @@ import RemoveTodoModal from "./RemoveTodoModal";
 import TodoSkeleton from "./TodoSkelton";
 import AddTodoModal from "./AddTodoModal";
 import axios from "axios";
+import Pagination from "./Pagination";
 // import { faker } from "@faker-js/faker";
 
 const TodoList = () => {
@@ -17,6 +18,9 @@ const TodoList = () => {
 
   // States
   const [queryVersion, setQueryVersion] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const pageSize = 10;
 
   // Open Modal States
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -40,8 +44,8 @@ const TodoList = () => {
   });
 
   const { isLoading, data } = useAuthenticatedQuery({
-    queryKey: ["todoList", `${queryVersion}`],
-    url: "/users/me?populate=todos",
+    queryKey: ["todoList", `${queryVersion}`, `${currentPage}`, `${pageSize}`],
+    url: `/todos?filters[users_permissions_user][id][$eq]=${userData.user.id}&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}&sort=createdAt:desc`,
     config: {
       headers: {
         Authorization: `Bearer ${userData.jwt}`,
@@ -78,16 +82,14 @@ const TodoList = () => {
 
     const { title, description } = todoToEdit;
     try {
-      const { status } = await axiosInstance.put(
+      await axiosInstance.put(
         `/todos/${todoToEdit.documentId}`,
         { data: { title, description } },
         { headers: { Authorization: `Bearer ${userData.jwt}` } },
       );
 
-      if (status === 200) {
-        onCloseEditModal();
-        setQueryVersion((prev) => prev + 1);
-      }
+      onCloseEditModal();
+      setQueryVersion((prev) => prev + 1);
     } catch (error) {
       console.log(error);
     } finally {
@@ -105,17 +107,12 @@ const TodoList = () => {
     setIsRemoving(true);
 
     try {
-      const { status } = await axiosInstance.delete(
-        `/todos/${todoToEdit.documentId}`,
-        {
-          headers: { Authorization: `Bearer ${userData.jwt}` },
-        },
-      );
+      await axiosInstance.delete(`/todos/${todoToEdit.documentId}`, {
+        headers: { Authorization: `Bearer ${userData.jwt}` },
+      });
 
-      if (status === 200) {
-        setIsRemoveModalOpen(false);
-        setQueryVersion((prev) => prev + 1);
-      }
+      setIsRemoveModalOpen(false);
+      setQueryVersion((prev) => prev + 1);
     } catch (error) {
       console.log(error);
     } finally {
@@ -200,7 +197,11 @@ const TodoList = () => {
   //   }
   // };
 
-  const todos: ITodo[] = data?.todos ?? [];
+  const todos: ITodo[] = data?.data ?? [];
+
+  const totalTodos: number = data?.meta?.pagination?.total ?? 0;
+
+  const totalPages: number = data?.meta?.pagination?.pageCount ?? 1;
 
   const todosWithDescription = todos.filter((todo) =>
     todo.description?.trim(),
@@ -256,7 +257,7 @@ const TodoList = () => {
         <Button
           type="button"
           onClick={onOpenAddModal}
-          className="!w-full gap-2 rounded-lg border-indigo-400/20 px-4 sm:!w-auto sm:shrink-0"
+          className="w-full! gap-2 rounded-lg border-indigo-400/20 px-4 sm:w-auto! sm:shrink-0"
         >
           <svg
             viewBox="0 0 24 24"
@@ -299,7 +300,7 @@ const TodoList = () => {
           </div>
 
           <p className="mt-3 text-2xl font-semibold tracking-tight text-zinc-100">
-            {todos.length}
+            {totalTodos}
           </p>
 
           <p className="mt-1 text-xs leading-5 text-zinc-500">
@@ -351,10 +352,9 @@ const TodoList = () => {
           </div>
 
           <span className="shrink-0 rounded-md border border-zinc-800 bg-zinc-900 px-2.5 py-1 text-xs font-medium text-zinc-400">
-            {todos.length} {todos.length === 1 ? "task" : "tasks"}
+            {totalTodos} {totalTodos === 1 ? "task" : "tasks"}
           </span>
         </div>
-
         {todos.length > 0 ? (
           <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/30">
             {todos.map((todo, index) => (
@@ -386,12 +386,12 @@ const TodoList = () => {
 
                 {/* Task information */}
                 <div className="min-w-0 flex-1">
-                  <h3 className="break-words text-sm font-medium leading-6 text-zinc-200 transition-colors group-hover:text-white">
+                  <h3 className="wrap-break-word text-sm font-medium leading-6 text-zinc-200 transition-colors group-hover:text-white">
                     {todo.title}
                   </h3>
 
                   {todo.description?.trim() ? (
-                    <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-6 text-zinc-500">
+                    <p className="mt-1 whitespace-pre-wrap wrap-break-word text-sm leading-6 text-zinc-500">
                       {todo.description}
                     </p>
                   ) : (
@@ -479,7 +479,7 @@ const TodoList = () => {
             <Button
               type="button"
               onClick={onOpenAddModal}
-              className="!mt-5 !w-auto gap-2"
+              className="mt-5! w-auto! gap-2"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -498,6 +498,13 @@ const TodoList = () => {
             </Button>
           </div>
         )}
+        {totalTodos > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}{" "}
       </section>
 
       {/* Modals */}
